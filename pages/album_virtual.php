@@ -74,6 +74,13 @@ if ($paginaActual == 1) {
     }
 }
 
+$paginasEspeciales = [
+    106 => [
+        "clase" => "pagina106",
+        "numeros" => [9, 10, 11, 12, 13]
+    ]
+];
+
 function banderaPais($codigo) {
     $banderas = [
         "MEX" => "🇲🇽",
@@ -145,9 +152,10 @@ function renderSlot($figu) {
 ?>
 
     <div class="slot-figurita
-                slot-num-<?php echo intval($figu["numero"]); ?>
-                <?php echo $figu["tipo"] == 'equipo' ? 'slot-horizontal' : ''; ?>
-                <?php echo $tiene ? 'conseguida' : 'faltante'; ?>"
+            slot-num-<?php echo intval($figu["numero"]); ?>
+            <?php echo strtolower($figu["pais_codigo"]) . str_pad($figu["numero"], 2, "0", STR_PAD_LEFT); ?>
+            <?php echo $figu["tipo"] == 'equipo' ? 'slot-horizontal' : ''; ?>
+            <?php echo $tiene ? 'conseguida' : 'faltante'; ?>"
          data-tiene="<?php echo $tiene ? '1' : '0'; ?>"
          data-codigo="<?php echo htmlspecialchars($codigo); ?>"
          data-nombre="<?php echo htmlspecialchars($nombreMostrar); ?>"
@@ -198,6 +206,7 @@ function renderSlot($figu) {
     <meta charset="UTF-8">
     <title>Álbum Virtual</title>
     <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="stylesheet" href="../css/album_especiales.css">
 </head>
 
 <body>
@@ -314,15 +323,37 @@ function renderSlot($figu) {
                         }
                     ?>
 
-                    <div class="<?php echo $claseFwc; ?>" data-pagina="Página <?php echo $paginaActual; ?>">
+                        <?php if (isset($paginasEspeciales[$paginaActual])): ?>
 
-                        <h2>FWC - Generales</h2>
+                            <?php
+                                $configEspecial = $paginasEspeciales[$paginaActual];
+                                $claseEspecial = $configEspecial["clase"];
+                            ?>
 
-                        <div class="grilla-album">
-                            <?php foreach ($figuritas as $figu): ?>
-                                <?php echo renderSlot($figu); ?>
-                            <?php endforeach; ?>
-                        </div>
+                            <div class="pagina-especial <?php echo htmlspecialchars($claseEspecial); ?>"
+                                data-pagina="Página <?php echo $paginaActual; ?>">
+
+                                <?php foreach ($figuritas as $figu): ?>
+                                    <?php echo renderSlot($figu); ?>
+                                <?php endforeach; ?>
+
+                            </div>
+
+                        <?php else: ?>
+
+                            <div class="<?php echo $claseFwc; ?>" data-pagina="Página <?php echo $paginaActual; ?>">
+
+                                <h2>FWC - Generales</h2>
+
+                                <div class="grilla-album">
+                                    <?php foreach ($figuritas as $figu): ?>
+                                        <?php echo renderSlot($figu); ?>
+                                    <?php endforeach; ?>
+                                </div>
+
+                            </div>
+
+                        <?php endif; ?>
 
                     </div>
 
