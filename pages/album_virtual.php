@@ -75,9 +75,17 @@ if ($paginaActual == 1) {
 }
 
 $paginasEspeciales = [
+    2 => [
+        "clase" => "pagina2",
+        "numeros" => [5, 6, 7, 8]
+    ],
     106 => [
         "clase" => "pagina106",
         "numeros" => [9, 10, 11, 12, 13]
+    ],
+    108 => [
+        "clase" => "pagina108",
+        "numeros" => [14, 15, 16, 17, 18, 19]
     ]
 ];
 

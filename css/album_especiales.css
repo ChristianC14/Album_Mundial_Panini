@@ -46,7 +46,8 @@ Motor de fondo + slots
 .pagina-especial .slot-figurita img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain !important;
+    background: transparent !important;
 }
 
 .pagina-especial .slot-info {
@@ -75,15 +76,79 @@ Motor de fondo + slots
 }
 
 /* =========================
+PÁGINA 2 / 3
+FWC 05 - FWC 08
+========================= */
+
+.pagina2 {
+    background-image: url("../assets/fondos/pagina2_digital.png");
+}
+
+/* Figuritas verticales de página 2 */
+.pagina2 .fwc05,
+.pagina2 .fwc06,
+.pagina2 .fwc07,
+.pagina2 .fwc08 {
+    width: 122px !important;
+    height: 164px !important;
+
+    min-width: unset !important;
+    min-height: unset !important;
+    max-width: unset !important;
+    max-height: unset !important;
+
+    background: transparent !important;
+}
+
+/* Si falta la figurita, se ve el placeholder dibujado en el fondo */
+.pagina2 .slot-placeholder {
+    background: transparent !important;
+    border: none !important;
+}
+
+.pagina2 .slot-placeholder strong,
+.pagina2 .slot-placeholder span {
+    display: none !important;
+}
+
+.pagina2 .slot-figurita.faltante {
+    background: transparent !important;
+}
+
+/* FWC05 */
+.pagina2 .fwc05 {
+    left: 232px;
+    top: 138px;
+}
+
+/* FWC06 */
+.pagina2 .fwc06 {
+    left: 348px;
+    top: 472px;
+}
+
+/* FWC07 */
+.pagina2 .fwc07 {
+    left: 642px;
+    top: 32px;
+}
+
+/* FWC08 */
+.pagina2 .fwc08 {
+    left: 906px;
+    top: 297px;
+}
+
+/* =========================
 PÁGINA 106 / 107
 FWC 09 - FWC 13
 ========================= */
 
 .pagina106 {
-    background-image: url("../assets/fondos/pagina106.jpg");
+    background-image: url("../assets/fondos/pagina106_digital.png");
 }
 
-/* Todas las figuritas de historia en esta doble página son horizontales */
+/* Figuritas horizontales de página 106 */
 .pagina106 .fwc09,
 .pagina106 .fwc10,
 .pagina106 .fwc11,
@@ -98,42 +163,93 @@ FWC 09 - FWC 13
     max-height: unset !important;
 }
 
-/* Para que no recorte las figus horizontales */
-.pagina106 .fwc09 img,
-.pagina106 .fwc10 img,
-.pagina106 .fwc11 img,
-.pagina106 .fwc12 img,
-.pagina106 .fwc13 img {
-    object-fit: contain !important;
-    background: transparent !important;
-}
-
 /* FWC09 - Italia 1934 */
 .pagina106 .fwc09 {
     left: 313px;
-    top: 267px;
+    top: 265px;
 }
 
 /* FWC10 - Brasil 1950 */
 .pagina106 .fwc10 {
     left: 313px;
-    top: 457px;
+    top: 455px;
 }
 
 /* FWC11 - Suiza 1954 */
 .pagina106 .fwc11 {
-    left: 594px;
-    top: 92px;
+    left: 596px;
+    top: 85px;
 }
 
 /* FWC12 - Chile 1962 */
 .pagina106 .fwc12 {
-    left: 594px;
-    top: 270px;
+    left: 596px;
+    top: 267px;
 }
 
 /* FWC13 - Alemania 1974 */
 .pagina106 .fwc13 {
-    left: 859px;
+    left: 854px;
     top: 455px;
+}
+
+/* =========================
+PÁGINA 108 / 109
+FWC 14 - FWC 19
+========================= */
+
+.pagina108 {
+    background-image: url("../assets/fondos/pagina108_digital.png");
+}
+
+/* Figuritas horizontales de página 108 */
+.pagina108 .fwc14,
+.pagina108 .fwc15,
+.pagina108 .fwc16,
+.pagina108 .fwc17,
+.pagina108 .fwc18,
+.pagina108 .fwc19 {
+    width: 170px !important;
+    height: 117px !important;
+
+    min-width: unset !important;
+    min-height: unset !important;
+    max-width: unset !important;
+    max-height: unset !important;
+}
+
+/* FWC14 - México 1986 */
+.pagina108 .fwc14 {
+    left: 38px;
+    top: 269px;
+}
+
+/* FWC15 - USA 1994 */
+.pagina108 .fwc15 {
+    left: 38px;
+    top: 460px;
+}
+
+/* FWC16 - Corea/Japón 2002 */
+.pagina108 .fwc16 {
+    left: 588px;
+    top: 70px;
+}
+
+/* FWC17 - Alemania 2006 */
+.pagina108 .fwc17 {
+    left: 844px;
+    top: 70px;
+}
+
+/* FWC18 - Sudáfrica 2010 */
+.pagina108 .fwc18 {
+    left: 844px;
+    top: 270px;
+}
+
+/* FWC19 - Qatar 2022 */
+.pagina108 .fwc19 {
+    left: 844px;
+    top: 460px;
 }
