@@ -75,6 +75,10 @@ if ($paginaActual == 1) {
 }
 
 $paginasEspeciales = [
+    1 => [
+        "clase" => "pagina1",
+        "numeros" => [0, 1, 2, 3, 4]
+    ],
     2 => [
         "clase" => "pagina2",
         "numeros" => [5, 6, 7, 8]
@@ -239,37 +243,35 @@ function renderSlot($figu) {
 
         <div class="pagina-album" id="paginaAlbum">
 
-            <?php if ($paginaActual == 1): ?>
+            <?php if (isset($paginasEspeciales[$paginaActual])): ?>
 
-                <div class="pagina-indice-layout">
+                <?php
+                    $configEspecial = $paginasEspeciales[$paginaActual];
+                    $claseEspecial = $configEspecial["clase"];
+                ?>
 
-                    <section class="indice-paises">
-                        <h3>Índice de países</h3>
+                <div class="pagina-especial <?php echo htmlspecialchars($claseEspecial); ?>"
+                     data-pagina="Página <?php echo $paginaActual; ?>">
 
-                        <div class="indice-grid">
-                            <?php foreach ($paisesIndice as $pais): ?>
-                                <a href="album_virtual.php?pagina=<?php echo $pais["pagina"]; ?>" class="indice-item">
-                                    <span>Grupo <?php echo htmlspecialchars($pais["grupo"]); ?></span>
-                                    <strong><?php echo htmlspecialchars($pais["codigo"]); ?></strong>
-                                    <em><?php echo htmlspecialchars($pais["nombre"]); ?> Pág. <?php echo htmlspecialchars($pais["pagina"]); ?></em>
-                                </a>
-                            <?php endforeach; ?>
+                    <?php foreach ($figuritas as $figu): ?>
+                        <?php echo renderSlot($figu); ?>
+                    <?php endforeach; ?>
+
+                    <?php if ($paginaActual == 1): ?>
+
+                        <?php
+                            $myPaniniPath = "../uploads/my_panini/dante_panini.png";
+                        ?>
+
+                        <div class="slot-my-panini">
+                            <?php if (file_exists($myPaniniPath)): ?>
+                                <img src="<?php echo $myPaniniPath; ?>" alt="My Panini Dante">
+                            <?php endif; ?>
                         </div>
-                    </section>
 
-                    <section class="fwc-pagina-uno">
-                        <h3>FWC 00 al FWC 04</h3>
-
-                        <div class="grilla-fwc-p1">
-                            <?php foreach ($figuritas as $figu): ?>
-                                <?php echo renderSlot($figu); ?>
-                            <?php endforeach; ?>
-                        </div>
-                    </section>
+                    <?php endif; ?>
 
                 </div>
-
-                <div class="numero-pagina-album">Página 1</div>
 
             <?php else: ?>
 
@@ -285,29 +287,27 @@ function renderSlot($figu) {
                             <small>
                                 <?php echo $figuritas[0]["pais_codigo"]; ?>
                             </small>
+
                             <div>
                                 <h2><?php echo htmlspecialchars($figuritas[0]["pais_nombre"]); ?></h2>
                                 <p>
                                     Grupo <?php echo htmlspecialchars($figuritas[0]["grupo"]); ?>
-                                  
                                 </p>
                             </div>
-                                                        <?php
 
+                            <?php
                                 $codigoBandera = strtolower($figuritas[0]["pais_codigo"]);
-
                                 $rutaBandera = "../assets/banderas/" . $codigoBandera . ".png";
 
                                 if (!file_exists($rutaBandera)) {
                                     $rutaBandera = "../assets/banderas/default.png";
                                 }
+                            ?>
 
-                                ?>
-
-                                <img
-                                    src="<?php echo $rutaBandera; ?>"
-                                    class="bandera-pais-img"
-                                    alt="<?php echo htmlspecialchars($figuritas[0]["pais_nombre"]); ?>"
+                            <img
+                                src="<?php echo $rutaBandera; ?>"
+                                class="bandera-pais-img"
+                                alt="<?php echo htmlspecialchars($figuritas[0]["pais_nombre"]); ?>"
                             >
                         </div>
 
@@ -325,43 +325,17 @@ function renderSlot($figu) {
 
                     <?php
                         $claseFwc = "pagina-fwc-generales";
-
-                        if ($paginaActual == 2) {
-                            $claseFwc .= " pagina-fwc-2";
-                        }
                     ?>
 
-                        <?php if (isset($paginasEspeciales[$paginaActual])): ?>
+                    <div class="<?php echo $claseFwc; ?>" data-pagina="Página <?php echo $paginaActual; ?>">
 
-                            <?php
-                                $configEspecial = $paginasEspeciales[$paginaActual];
-                                $claseEspecial = $configEspecial["clase"];
-                            ?>
+                        <h2>FWC - Generales</h2>
 
-                            <div class="pagina-especial <?php echo htmlspecialchars($claseEspecial); ?>"
-                                data-pagina="Página <?php echo $paginaActual; ?>">
-
-                                <?php foreach ($figuritas as $figu): ?>
-                                    <?php echo renderSlot($figu); ?>
-                                <?php endforeach; ?>
-
-                            </div>
-
-                        <?php else: ?>
-
-                            <div class="<?php echo $claseFwc; ?>" data-pagina="Página <?php echo $paginaActual; ?>">
-
-                                <h2>FWC - Generales</h2>
-
-                                <div class="grilla-album">
-                                    <?php foreach ($figuritas as $figu): ?>
-                                        <?php echo renderSlot($figu); ?>
-                                    <?php endforeach; ?>
-                                </div>
-
-                            </div>
-
-                        <?php endif; ?>
+                        <div class="grilla-album">
+                            <?php foreach ($figuritas as $figu): ?>
+                                <?php echo renderSlot($figu); ?>
+                            <?php endforeach; ?>
+                        </div>
 
                     </div>
 

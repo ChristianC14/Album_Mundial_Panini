@@ -76,6 +76,123 @@ Motor de fondo + slots
 }
 
 /* =========================
+PÁGINA 1
+FWC 00 - FWC 04 + MY PANINI
+========================= */
+
+.pagina1 {
+    background-image: url("../assets/fondos/pagina1_digital.png");
+}
+
+/* FWC horizontales */
+.pagina1 .fwc00,
+.pagina1 .fwc01,
+.pagina1 .fwc02,
+.pagina1 .fwc03 {
+    width: 180px !important;
+    height: 124px !important;
+
+    min-width: unset !important;
+    min-height: unset !important;
+    max-width: unset !important;
+    max-height: unset !important;
+
+    background: transparent !important;
+}
+
+/* FWC04 vertical */
+.pagina1 .fwc04 {
+    width: 122px !important;
+    height: 164px !important;
+
+    min-width: unset !important;
+    min-height: unset !important;
+    max-width: unset !important;
+    max-height: unset !important;
+
+    background: transparent !important;
+}
+
+/* Imágenes dentro de los slots */
+.pagina1 .fwc00 img,
+.pagina1 .fwc01 img,
+.pagina1 .fwc02 img,
+.pagina1 .fwc03 img,
+.pagina1 .fwc04 img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+    background: transparent !important;
+}
+
+/* Si falta la figurita, se ve el placeholder dibujado en el fondo */
+.pagina1 .slot-placeholder {
+    background: transparent !important;
+    border: none !important;
+}
+
+.pagina1 .slot-placeholder strong,
+.pagina1 .slot-placeholder span {
+    display: none !important;
+}
+
+.pagina1 .slot-figurita.faltante {
+    background: transparent !important;
+}
+
+/* FWC00 */
+.pagina1 .fwc00 {
+    left: 224px;
+    top: 29px;
+}
+
+/* FWC01 */
+.pagina1 .fwc01 {
+    left: 926px;
+    top: 14px;
+}
+
+/* FWC02 pegada debajo de FWC01 */
+.pagina1 .fwc02 {
+    left: 926px;
+    top: 132px;
+}
+
+/* FWC03 */
+.pagina1 .fwc03 {
+    left: 926px;
+    top: 292px;
+}
+
+/* FWC04 */
+.pagina1 .fwc04 {
+    left: 956px;
+    top: 458px;
+}
+
+/* Slot especial My Panini - no pertenece a la colección */
+.pagina1 .slot-my-panini {
+    position: absolute;
+    left: 48px;
+    top: 307px;
+
+    width: 124px;
+    height: 162px;
+
+    border-radius: 8px;
+    overflow: hidden;
+
+    background: transparent;
+}
+
+.pagina1 .slot-my-panini img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* =========================
 PÁGINA 2 / 3
 FWC 05 - FWC 08
 ========================= */
@@ -253,3 +370,4 @@ FWC 14 - FWC 19
     left: 844px;
     top: 460px;
 }
+
