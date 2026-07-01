@@ -1,0 +1,80 @@
+/* =========================
+ESTADÍSTICAS POR PAÍS
+========================= */
+
+.estadisticas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 25px;
+}
+
+.estadistica-pais {
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 18px;
+    border: 1px solid #334155;
+}
+
+.estadistica-fwc {
+    border-color: #facc15;
+}
+
+.estadistica-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+
+.estadistica-info h2 {
+    margin: 0;
+    color: #38bdf8;
+}
+
+.estadistica-info h2 span {
+    color: #94a3b8;
+    font-size: 16px;
+    margin-left: 8px;
+}
+
+.estadistica-info p {
+    margin: 6px 0 0;
+    color: #cbd5e1;
+}
+
+.estadistica-numeros {
+    text-align: right;
+}
+
+.estadistica-numeros strong {
+    display: block;
+    color: white;
+    font-size: 26px;
+}
+
+.estadistica-numeros span {
+    color: #22c55e;
+    font-weight: bold;
+}
+
+.barra-estadistica {
+    margin-top: 14px;
+    height: 18px;
+    background: #334155;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.barra-estadistica-interna {
+    height: 100%;
+    background: #22c55e;
+}
+
+.estadistica-detalle {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: #94a3b8;
+    font-size: 14px;
+}

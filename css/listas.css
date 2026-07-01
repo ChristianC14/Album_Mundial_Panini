@@ -1,0 +1,120 @@
+/* =========================
+FALTANTES
+========================= */
+
+.lista-faltantes {
+    margin-top: 25px;
+}
+
+.titulo-grupo-faltantes {
+    margin-top: 30px;
+    color: #38bdf8;
+    font-size: 24px;
+}
+
+.titulo-grupo-faltantes span {
+    display: block;
+    color: #94a3b8;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.grupo-faltantes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 12px;
+}
+
+.item-faltante {
+    background: #1e293b;
+    border: 1px dashed #64748b;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.item-faltante strong {
+    color: #f97316;
+    font-size: 18px;
+}
+
+.item-faltante span {
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+/* =========================
+REPETIDAS / MIS FIGURITAS
+========================= */
+
+.grid-figuritas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 18px;
+}
+
+.figu-card {
+    background: #1e293b;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.figu-img {
+    height: 220px;
+    background: #334155;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.figu-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.figu-img span {
+    color: #cbd5e1;
+    font-weight: bold;
+}
+
+.figu-info {
+    padding: 15px;
+}
+
+.figu-info h3 {
+    margin: 0 0 8px;
+    color: #ffffff;
+}
+
+.figu-info p {
+    color: #cbd5e1;
+    margin: 0 0 8px;
+}
+
+.figu-info small {
+    color: #94a3b8;
+}
+
+.badge-repetida,
+.badge-ok {
+    margin-top: 12px;
+    padding: 8px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.badge-repetida {
+    background: #92400e;
+    color: white;
+}
+
+.badge-ok {
+    background: #0f766e;
+    color: white;
+}

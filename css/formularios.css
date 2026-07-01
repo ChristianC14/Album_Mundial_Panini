@@ -1,0 +1,140 @@
+/* =========================
+FORMULARIOS
+========================= */
+
+.formulario{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.form-row{
+    display:flex;
+    gap:20px;
+}
+
+.form-col{
+    flex:1;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:bold;
+    color:#cbd5e1;
+}
+
+input,
+select,
+textarea{
+
+    width:100%;
+    padding:12px 14px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#334155;
+    color:#fff;
+
+    font-size:15px;
+
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+
+    outline:none;
+
+    box-shadow:0 0 0 2px #38bdf8;
+
+}
+
+textarea{
+
+    resize:vertical;
+
+}
+
+.textarea-repetidas{
+
+    min-height:300px;
+
+    font-family:Consolas, monospace;
+
+}
+
+button,
+.boton,
+.boton-pdf{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    padding:12px 24px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    background:#22c55e;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    text-decoration:none;
+
+    transition:.25s;
+
+}
+
+button:hover,
+.boton:hover,
+.boton-pdf:hover{
+
+    background:#16a34a;
+
+    transform:translateY(-2px);
+
+}
+
+button:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+}
+
+.acciones-seccion{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin:18px 0;
+
+}
+
+.buscador{
+
+    margin:20px 0;
+
+}
+
+.buscador input{
+
+    font-size:16px;
+
+}

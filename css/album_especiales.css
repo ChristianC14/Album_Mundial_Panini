@@ -29,8 +29,14 @@ Motor de fondo + slots
 
 /* Slots dentro de páginas especiales */
 .pagina-especial .slot-figurita {
-    position: absolute;
+    position: absolute !important;
     margin: 0 !important;
+
+    min-width: unset !important;
+    min-height: unset !important;
+    max-width: unset !important;
+    max-height: unset !important;
+
     border: 2px dashed rgba(34, 197, 94, 0.85);
     background: rgba(226, 232, 240, 0.18);
     backdrop-filter: blur(1px);
@@ -83,36 +89,51 @@ FWC 09 - FWC 13
 .pagina106 .fwc11,
 .pagina106 .fwc12,
 .pagina106 .fwc13 {
-    width: 170px;
-    height: 118px;
+    width: 163px !important;
+    height: 122px !important;
+
+    min-width: unset !important;
+    min-height: unset !important;
+    max-width: unset !important;
+    max-height: unset !important;
 }
 
-/* Uruguay 1930 */
+/* Para que no recorte las figus horizontales */
+.pagina106 .fwc09 img,
+.pagina106 .fwc10 img,
+.pagina106 .fwc11 img,
+.pagina106 .fwc12 img,
+.pagina106 .fwc13 img {
+    object-fit: contain !important;
+    background: transparent !important;
+}
+
+/* FWC09 - Italia 1934 */
 .pagina106 .fwc09 {
-    left: 330px;
-    top: 260px;
+    left: 313px;
+    top: 267px;
 }
 
-/* Italia 1934 */
+/* FWC10 - Brasil 1950 */
 .pagina106 .fwc10 {
-    left: 330px;
-    top: 440px;
+    left: 313px;
+    top: 457px;
 }
 
-/* Suiza 1954 */
+/* FWC11 - Suiza 1954 */
 .pagina106 .fwc11 {
-    left: 640px;
-    top: 95px;
+    left: 594px;
+    top: 92px;
 }
 
-/* Chile 1962 */
+/* FWC12 - Chile 1962 */
 .pagina106 .fwc12 {
-    left: 640px;
-    top: 280px;
+    left: 594px;
+    top: 270px;
 }
 
-/* Alemania 1974 */
+/* FWC13 - Alemania 1974 */
 .pagina106 .fwc13 {
-    left: 895px;
+    left: 859px;
     top: 455px;
 }

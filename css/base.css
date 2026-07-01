@@ -1,0 +1,57 @@
+/* =========================
+BASE GENERAL
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #0f172a;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.contenedor {
+    width: 95%;
+    max-width: 1700px;
+    margin: auto;
+    padding: 30px 0;
+}
+
+h1 {
+    color: #22c55e;
+    margin: 0 0 6px;
+}
+
+.subtitulo {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.boton-volver {
+    display: inline-block;
+    margin: 10px 0 20px;
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+.boton-volver:hover {
+    text-decoration: underline;
+}
+
+.mensaje {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.mensaje.exito {
+    background: #0f766e;
+}
+
+.mensaje.repetida {
+    background: #92400e;
+}

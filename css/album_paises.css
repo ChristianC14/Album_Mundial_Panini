@@ -1,0 +1,199 @@
+/* =========================
+CABECERA PAÍS
+========================= */
+
+.cabecera-pais-fisica {
+    position: absolute;
+    left: 32px;
+    top: 38px;
+    width: 260px;
+    height: 130px;
+    z-index: 20;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cabecera-bandera {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.bandera-pais-img {
+    width: 58px;
+    height: 36px;
+    object-fit: cover;
+    border: 2px solid #0f172a;
+    border-radius: 2px;
+    margin-top: 4px;
+}
+
+.cabecera-bandera h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 34px;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.cabecera-bandera p {
+    display: block;
+    margin: 6px 0 0;
+    color: #334155;
+    font-size: 13px;
+}
+
+/* =========================
+PÁGINA PAÍS - FORMATO FÍSICO
+========================= */
+
+.pagina-pais-fija {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef6ef 45%, #f2eef8 100%);
+    border-radius: 18px;
+}
+
+.pagina-pais-fija .slot-figurita {
+    position: absolute;
+}
+
+/* Superior izquierda */
+.pagina-pais-fija .slot-num-1 {
+    left: 296px;
+    top: 34px;
+}
+
+.pagina-pais-fija .slot-num-2 {
+    left: 426px;
+    top: 34px;
+}
+
+/* Centro izquierda */
+.pagina-pais-fija .slot-num-3 {
+    left: 32px;
+    top: 210px;
+}
+
+.pagina-pais-fija .slot-num-4 {
+    left: 162px;
+    top: 210px;
+}
+
+.pagina-pais-fija .slot-num-5 {
+    left: 296px;
+    top: 210px;
+}
+
+.pagina-pais-fija .slot-num-6 {
+    left: 426px;
+    top: 210px;
+}
+
+/* Abajo izquierda */
+.pagina-pais-fija .slot-num-7 {
+    left: 32px;
+    top: 400px;
+}
+
+.pagina-pais-fija .slot-num-8 {
+    left: 162px;
+    top: 400px;
+}
+
+.pagina-pais-fija .slot-num-9 {
+    left: 296px;
+    top: 400px;
+}
+
+.pagina-pais-fija .slot-num-10 {
+    left: 426px;
+    top: 400px;
+}
+
+/* Superior derecha */
+.pagina-pais-fija .slot-num-11 {
+    left: 560px;
+    top: 34px;
+}
+
+.pagina-pais-fija .slot-num-12 {
+    left: 690px;
+    top: 34px;
+}
+
+.pagina-pais-fija .slot-num-13 {
+    left: 828px;
+    top: 52px;
+}
+
+/* Centro derecha */
+.pagina-pais-fija .slot-num-14 {
+    left: 560px;
+    top: 210px;
+}
+
+.pagina-pais-fija .slot-num-15 {
+    left: 690px;
+    top: 210px;
+}
+
+.pagina-pais-fija .slot-num-16 {
+    left: 820px;
+    top: 210px;
+}
+
+.pagina-pais-fija .slot-num-17 {
+    left: 950px;
+    top: 210px;
+}
+
+/* Abajo derecha */
+.pagina-pais-fija .slot-num-18 {
+    left: 560px;
+    top: 400px;
+}
+
+.pagina-pais-fija .slot-num-19 {
+    left: 690px;
+    top: 400px;
+}
+
+.pagina-pais-fija .slot-num-20 {
+    left: 820px;
+    top: 400px;
+}
+
+.pagina-pais-fija::after {
+    content: attr(data-pagina);
+    position: absolute;
+    bottom: 12px;
+    right: 24px;
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.pagina-pais-fija::before {
+    content: "";
+    position: absolute;
+    top: 25px;
+    bottom: 25px;
+    left: 552px;
+    width: 3px;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(15, 23, 42, 0.25),
+        transparent
+    );
+    box-shadow:
+        -1px 0 2px rgba(0,0,0,0.12),
+        1px 0 2px rgba(255,255,255,0.25);
+    z-index: 5;
+}

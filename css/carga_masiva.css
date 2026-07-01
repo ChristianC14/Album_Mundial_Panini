@@ -1,0 +1,145 @@
+/* =========================
+CARGA MASIVA POR EQUIPO
+========================= */
+
+.tabla-carga-equipo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 25px;
+}
+
+.fila-carga-equipo {
+    display: grid !important;
+
+    grid-template-columns: 260px 1fr !important;
+
+    grid-template-areas:
+        "codigo codigo"
+        "foto campos";
+
+    gap: 12px 22px !important;
+
+    align-items: start !important;
+
+    background: #0f172a !important;
+    border: 1px solid #334155 !important;
+    border-radius: 14px !important;
+
+    padding: 14px !important;
+}
+
+.fila-carga-equipo.imagen-detectada {
+    border-color: #22c55e !important;
+}
+
+.codigo-carga {
+    grid-area: codigo;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 6px;
+
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.preview-carga {
+    grid-area: foto;
+
+    width: 240px !important;
+    height: 312px !important;
+
+    min-width: 240px !important;
+    min-height: 312px !important;
+
+    max-width: 240px !important;
+    max-height: 312px !important;
+
+    background: #334155 !important;
+    border: 1px dashed #64748b !important;
+    border-radius: 10px !important;
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    overflow: hidden !important;
+}
+
+.preview-carga img {
+    width: 100% !important;
+    height: 100% !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    object-fit: contain !important;
+
+    display: block !important;
+}
+
+.preview-carga span {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.campos-carga {
+    grid-area: campos;
+
+    display: grid !important;
+
+    grid-template-columns: 1fr 1fr !important;
+
+    gap: 8px !important;
+
+    align-content: start !important;
+
+    max-width: 760px !important;
+}
+
+.campos-carga input {
+    height: 34px !important;
+
+    padding: 6px 9px !important;
+
+    font-size: 13px !important;
+}
+
+.campos-carga input:first-child {
+    grid-column: 1 / 3;
+}
+
+/* =========================
+CARGA MASIVA REPETIDAS / QUITAR REPETIDAS
+========================= */
+
+.textarea-repetidas {
+    width: 100%;
+    min-height: 280px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #334155;
+    color: white;
+    font-size: 16px;
+    resize: vertical;
+}
+
+.resultado-repetidas {
+    margin-top: 25px;
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.resultado-repetidas h2 {
+    margin-top: 0;
+    color: #38bdf8;
+}
+
+.resultado-repetidas h3 {
+    color: #22c55e;
+}

@@ -1,0 +1,118 @@
+/* =========================
+MODAL FIGURITA
+========================= */
+
+.modal-figurita {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.88);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-figurita-contenido {
+    position: relative;
+    background: #1e293b;
+    color: white;
+    border-radius: 22px;
+    width: 95%;
+    max-width: 850px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+    padding: 24px;
+}
+
+.modal-cerrar {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 34px;
+    cursor: pointer;
+}
+
+.modal-figu-img {
+    background: #334155;
+    border-radius: 18px;
+    min-height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.modal-figu-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modal-figu-info h2 {
+    color: #38bdf8;
+    font-size: 38px;
+    margin: 20px 0 5px;
+}
+
+.modal-figu-info p,
+#modalDatosCompletos p {
+    color: #cbd5e1;
+}
+
+.modal-estado,
+.modal-repetidas {
+    margin-top: 14px;
+    padding: 13px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.estado-ok {
+    background: #0f766e;
+}
+
+.estado-repetida {
+    background: #92400e;
+}
+
+.estado-unica {
+    background: #334155;
+}
+
+.sin-datos {
+    color: #fbbf24 !important;
+}
+
+/* Modal de error usado en agregar figurita */
+.modal-error {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-contenido {
+    background: #1e293b;
+    color: white;
+    padding: 24px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 420px;
+}
+
+.modal-contenido button {
+    margin-top: 15px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+}
