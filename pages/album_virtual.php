@@ -209,8 +209,40 @@ function renderSlot($figu) {
     return ob_get_clean();
 }
 
-?>
+function obtenerHotspotIndice($pais, $contadorGrupo) {
 
+    $bases = [
+        "A" => ["left" => 595, "top" => 228],
+        "B" => ["left" => 767, "top" => 228],
+        "C" => ["left" => 595, "top" => 294],
+        "D" => ["left" => 767, "top" => 294],
+        "E" => ["left" => 595, "top" => 360],
+        "F" => ["left" => 767, "top" => 360],
+        "G" => ["left" => 595, "top" => 426],
+        "H" => ["left" => 767, "top" => 426],
+        "I" => ["left" => 595, "top" => 496],
+        "J" => ["left" => 767, "top" => 496],
+        "K" => ["left" => 595, "top" => 569],
+        "L" => ["left" => 767, "top" => 569],
+    ];
+
+    $grupo = strtoupper($pais["grupo"]);
+
+    if (!isset($bases[$grupo])) {
+        return null;
+    }
+
+    $fila = $contadorGrupo[$grupo] ?? 0;
+
+    return [
+        "left" => $bases[$grupo]["left"],
+        "top" => $bases[$grupo]["top"] + ($fila * 15),
+        "width" => 140,
+        "height" => 12
+    ];
+}
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -218,7 +250,6 @@ function renderSlot($figu) {
     <meta charset="UTF-8">
     <title>Álbum Virtual</title>
     <link rel="stylesheet" href="../css/estilos.css">
-    <link rel="stylesheet" href="../css/album_especiales.css">
 </head>
 
 <body>
@@ -260,13 +291,63 @@ function renderSlot($figu) {
                     <?php if ($paginaActual == 1): ?>
 
                         <?php
-                            $myPaniniPath = "../uploads/my_panini/dante_panini.png";
+                            $myPaniniPath = "";
+                            $myPaniniBase = "../uploads/my_panini/dante_panini";
+                            $extensionesMyPanini = ["png", "jpg", "jpeg", "webp"];
+
+                            foreach ($extensionesMyPanini as $ext) {
+                                if (file_exists($myPaniniBase . "." . $ext)) {
+                                    $myPaniniPath = $myPaniniBase . "." . $ext;
+                                    break;
+                                }
+                            }
                         ?>
 
-                        <div class="slot-my-panini">
-                            <?php if (file_exists($myPaniniPath)): ?>
-                                <img src="<?php echo $myPaniniPath; ?>" alt="My Panini Dante">
+                        <a href="cargar_my_panini.php" class="slot-my-panini" title="Cambiar foto My Panini">
+                            <?php if ($myPaniniPath !== ""): ?>
+                                <img src="<?php echo htmlspecialchars($myPaniniPath); ?>" alt="My Panini Dante">
+                            <?php else: ?>
+                                <span class="slot-my-panini-vacio">Cargar<br>My Panini</span>
                             <?php endif; ?>
+                        </a>
+                        <?php
+                            $contadorGrupo = [];
+                        ?>
+
+                        <div class="hotspots-indice-paises">
+
+                            <?php foreach ($paisesIndice as $pais): ?>
+
+                                <?php
+                                    $grupo = strtoupper($pais["grupo"]);
+
+                                    if (!isset($contadorGrupo[$grupo])) {
+                                        $contadorGrupo[$grupo] = 0;
+                                    }
+
+                                    $hotspot = obtenerHotspotIndice($pais, $contadorGrupo);
+
+                                    $contadorGrupo[$grupo]++;
+
+                                    if ($hotspot === null) {
+                                        continue;
+                                    }
+                                ?>
+
+                                <a
+                                    href="album_virtual.php?pagina=<?php echo intval($pais["pagina"]); ?>"
+                                    class="hotspot-indice"
+                                    title="<?php echo htmlspecialchars($pais["codigo"] . " - " . $pais["nombre"]); ?>"
+                                    style="
+                                        left: <?php echo intval($hotspot["left"]); ?>px;
+                                        top: <?php echo intval($hotspot["top"]); ?>px;
+                                        width: <?php echo intval($hotspot["width"]); ?>px;
+                                        height: <?php echo intval($hotspot["height"]); ?>px;
+                                    ">
+                                </a>
+
+                            <?php endforeach; ?>
+
                         </div>
 
                     <?php endif; ?>
