@@ -1,0 +1,223 @@
+/* =========================
+TRANSICIÓN TIPO HOJA DE LIBRO
+VERSIÓN MÁS VISIBLE
+========================= */
+
+.album-navegacion {
+    position: relative;
+    perspective: 2200px;
+}
+
+/* La página completa puede girar en 3D */
+.pagina-album {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform, opacity, filter;
+}
+
+/* Sombra general de pliegue */
+.pagina-album::before,
+.pagina-album::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 55%;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 999;
+}
+
+/* Sombra lado izquierdo */
+.pagina-album::before {
+    left: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.55),
+        rgba(0, 0, 0, 0.22),
+        rgba(255, 255, 255, 0.04)
+    );
+}
+
+/* Sombra lado derecho */
+.pagina-album::after {
+    right: 0;
+    background: linear-gradient(
+        to left,
+        rgba(0, 0, 0, 0.55),
+        rgba(0, 0, 0, 0.22),
+        rgba(255, 255, 255, 0.04)
+    );
+}
+
+/* Pasar a página siguiente */
+.pagina-album.pasando-siguiente {
+    animation: pasarHojaSiguiente 0.95s cubic-bezier(.45, .05, .2, 1) forwards;
+    transform-origin: right center;
+}
+
+/* Volver a página anterior */
+.pagina-album.pasando-anterior {
+    animation: pasarHojaAnterior 0.95s cubic-bezier(.45, .05, .2, 1) forwards;
+    transform-origin: left center;
+}
+
+.pagina-album.pasando-siguiente::after {
+    animation: sombraDerecha 0.95s ease forwards;
+}
+
+.pagina-album.pasando-anterior::before {
+    animation: sombraIzquierda 0.95s ease forwards;
+}
+
+/* Entrada luego del cambio */
+.pagina-album.entrando-desde-derecha {
+    animation: entrarDesdeDerecha 0.65s ease-out both;
+    transform-origin: left center;
+}
+
+.pagina-album.entrando-desde-izquierda {
+    animation: entrarDesdeIzquierda 0.65s ease-out both;
+    transform-origin: right center;
+}
+
+@keyframes pasarHojaSiguiente {
+    0% {
+        transform: translateX(0) rotateY(0deg) scale(1);
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    30% {
+        transform: translateX(-45px) rotateY(-20deg) scale(0.985);
+        opacity: 1;
+        filter: brightness(0.96);
+    }
+
+    65% {
+        transform: translateX(-170px) rotateY(-52deg) scale(0.94);
+        opacity: 0.82;
+        filter: brightness(0.82);
+    }
+
+    100% {
+        transform: translateX(-310px) rotateY(-78deg) scale(0.88);
+        opacity: 0;
+        filter: brightness(0.62);
+    }
+}
+
+@keyframes pasarHojaAnterior {
+    0% {
+        transform: translateX(0) rotateY(0deg) scale(1);
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    30% {
+        transform: translateX(45px) rotateY(20deg) scale(0.985);
+        opacity: 1;
+        filter: brightness(0.96);
+    }
+
+    65% {
+        transform: translateX(170px) rotateY(52deg) scale(0.94);
+        opacity: 0.82;
+        filter: brightness(0.82);
+    }
+
+    100% {
+        transform: translateX(310px) rotateY(78deg) scale(0.88);
+        opacity: 0;
+        filter: brightness(0.62);
+    }
+}
+
+@keyframes entrarDesdeDerecha {
+    0% {
+        transform: translateX(160px) rotateY(45deg) scale(0.93);
+        opacity: 0;
+        filter: brightness(0.72);
+    }
+
+    100% {
+        transform: translateX(0) rotateY(0deg) scale(1);
+        opacity: 1;
+        filter: brightness(1);
+    }
+}
+
+@keyframes entrarDesdeIzquierda {
+    0% {
+        transform: translateX(-160px) rotateY(-45deg) scale(0.93);
+        opacity: 0;
+        filter: brightness(0.72);
+    }
+
+    100% {
+        transform: translateX(0) rotateY(0deg) scale(1);
+        opacity: 1;
+        filter: brightness(1);
+    }
+}
+
+@keyframes sombraDerecha {
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 0.35;
+    }
+
+    70% {
+        opacity: 0.75;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes sombraIzquierda {
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 0.35;
+    }
+
+    70% {
+        opacity: 0.75;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Evita arrastre visual de imágenes */
+.pagina-album img,
+.slot-figurita img {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Evita sensación de arrastrar figuritas */
+.slot-figurita {
+    cursor: pointer;
+}
+
+.slot-figurita.faltante {
+    cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pagina-album,
+    .pagina-album::before,
+    .pagina-album::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

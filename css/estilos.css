@@ -11,6 +11,7 @@ CSS PRINCIPAL
 @import url("album_paises.css");
 @import url("album_fwc.css");
 @import url("album_especiales.css");
+@import url("album_transiciones.css");
 @import url("modal.css");
 @import url("faltantes.css");
 @import url("carga_masiva.css");

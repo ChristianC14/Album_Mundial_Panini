@@ -456,15 +456,83 @@ function obtenerHotspotIndice($pais, $contadorGrupo) {
 
 </div>
 
+
 <script>
 const paginaAlbum = document.getElementById("paginaAlbum");
 
 let inicioX = 0;
 let moviendo = false;
 let huboArrastre = false;
+let navegando = false;
 
 const paginaAnterior = <?php echo $paginaAnterior !== null ? json_encode("album_virtual.php?pagina=" . $paginaAnterior) : "null"; ?>;
 const paginaSiguiente = <?php echo $paginaSiguiente !== null ? json_encode("album_virtual.php?pagina=" . $paginaSiguiente) : "null"; ?>;
+
+/* =========================
+ENTRADA DESPUÉS DE CAMBIAR PÁGINA
+========================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+    const entrada = sessionStorage.getItem("album_transicion_entrada");
+
+    if (entrada === "siguiente") {
+        paginaAlbum.classList.add("entrando-desde-derecha");
+    }
+
+    if (entrada === "anterior") {
+        paginaAlbum.classList.add("entrando-desde-izquierda");
+    }
+
+    sessionStorage.removeItem("album_transicion_entrada");
+
+    setTimeout(() => {
+        paginaAlbum.classList.remove("entrando-desde-derecha");
+        paginaAlbum.classList.remove("entrando-desde-izquierda");
+    }, 500);
+});
+
+/* =========================
+NAVEGACIÓN CON EFECTO HOJA
+========================= */
+
+function navegarConAnimacion(url, direccion) {
+    if (!url || navegando) return;
+
+    navegando = true;
+
+    if (direccion === "siguiente") {
+        paginaAlbum.classList.add("pasando-siguiente");
+        sessionStorage.setItem("album_transicion_entrada", "siguiente");
+    }
+
+    if (direccion === "anterior") {
+        paginaAlbum.classList.add("pasando-anterior");
+        sessionStorage.setItem("album_transicion_entrada", "anterior");
+    }
+
+    setTimeout(() => {
+        window.location.href = url;
+    }, 920);
+}
+
+/* Flechas del álbum */
+document.querySelectorAll(".flecha-album").forEach(flecha => {
+    flecha.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        const url = this.getAttribute("href");
+
+        if (this.classList.contains("derecha")) {
+            navegarConAnimacion(url, "siguiente");
+        } else {
+            navegarConAnimacion(url, "anterior");
+        }
+    });
+});
+
+/* =========================
+SWIPE / ARRASTRE
+========================= */
 
 function iniciarMovimiento(x) {
     inicioX = x;
@@ -483,31 +551,52 @@ function terminarMovimiento(x) {
     }
 
     if (diferencia < -minimo && paginaSiguiente) {
-        paginaAlbum.classList.add("salir-izquierda");
-
-        setTimeout(() => {
-            window.location.href = paginaSiguiente;
-        }, 220);
+        navegarConAnimacion(paginaSiguiente, "siguiente");
     }
 
     if (diferencia > minimo && paginaAnterior) {
-        paginaAlbum.classList.add("salir-derecha");
-
-        setTimeout(() => {
-            window.location.href = paginaAnterior;
-        }, 220);
+        navegarConAnimacion(paginaAnterior, "anterior");
     }
 
     moviendo = false;
 }
 
-paginaAlbum.addEventListener("mousedown", e => iniciarMovimiento(e.clientX));
-paginaAlbum.addEventListener("mouseup", e => terminarMovimiento(e.clientX));
+paginaAlbum.addEventListener("mousedown", e => {
+    if (e.target.closest(".slot-figurita, .hotspot-indice, .slot-my-panini")) {
+        return;
+    }
 
-paginaAlbum.addEventListener("touchstart", e => iniciarMovimiento(e.touches[0].clientX));
+    iniciarMovimiento(e.clientX);
+});
+paginaAlbum.addEventListener("mouseup", e => terminarMovimiento(e.clientX));
+paginaAlbum.addEventListener("mouseleave", e => {
+    if (moviendo) {
+        moviendo = false;
+    }
+});
+
+paginaAlbum.addEventListener("touchstart", e => {
+    if (e.target.closest(".slot-figurita, .hotspot-indice, .slot-my-panini")) {
+        return;
+    }
+
+    iniciarMovimiento(e.touches[0].clientX);
+});
 paginaAlbum.addEventListener("touchend", e => terminarMovimiento(e.changedTouches[0].clientX));
 
+/* =========================
+MODAL FIGURITA
+========================= */
+
 const slots = document.querySelectorAll(".slot-figurita");
+
+document.querySelectorAll("img").forEach(img => {
+    img.setAttribute("draggable", "false");
+});
+
+document.querySelectorAll(".slot-figurita").forEach(slot => {
+    slot.addEventListener("dragstart", e => e.preventDefault());
+});
 
 slots.forEach(slot => {
     slot.addEventListener("click", function () {
@@ -606,6 +695,7 @@ document.getElementById("modalFigurita").addEventListener("click", function(e) {
     }
 });
 </script>
+
 
 </body>
 </html>
