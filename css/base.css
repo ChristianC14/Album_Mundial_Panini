@@ -55,3 +55,11 @@ h1 {
 .mensaje.repetida {
     background: #92400e;
 }
+
+.mensaje.error {
+    background: #991b1b;
+}
+
+.mensaje.advertencia {
+    background: #92400e;
+}
