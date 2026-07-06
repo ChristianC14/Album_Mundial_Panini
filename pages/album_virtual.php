@@ -273,8 +273,9 @@ function obtenerHotspotIndice($pais, $contadorGrupo) {
         <?php endif; ?>
 
         <div class="pagina-album" id="paginaAlbum">
+            <div class="hoja-album" id="hojaAlbum">
 
-            <?php if (isset($paginasEspeciales[$paginaActual])): ?>
+                <?php if (isset($paginasEspeciales[$paginaActual])): ?>
 
                 <?php
                     $configEspecial = $paginasEspeciales[$paginaActual];
@@ -430,6 +431,8 @@ function obtenerHotspotIndice($pais, $contadorGrupo) {
 
 </div>
 
+</div>
+
 <div id="modalFigurita" class="modal-figurita">
 
     <div class="modal-figurita-contenido">
@@ -459,6 +462,8 @@ function obtenerHotspotIndice($pais, $contadorGrupo) {
 
 <script>
 const paginaAlbum = document.getElementById("paginaAlbum");
+const hojaAlbum = document.getElementById("hojaAlbum") || paginaAlbum;
+
 
 let inicioX = 0;
 let moviendo = false;
@@ -476,19 +481,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const entrada = sessionStorage.getItem("album_transicion_entrada");
 
     if (entrada === "siguiente") {
-        paginaAlbum.classList.add("entrando-desde-derecha");
+        hojaAlbum.classList.add("entrando-desde-derecha");
     }
 
     if (entrada === "anterior") {
-        paginaAlbum.classList.add("entrando-desde-izquierda");
+        hojaAlbum.classList.add("entrando-desde-izquierda");
     }
 
     sessionStorage.removeItem("album_transicion_entrada");
 
     setTimeout(() => {
-        paginaAlbum.classList.remove("entrando-desde-derecha");
-        paginaAlbum.classList.remove("entrando-desde-izquierda");
-    }, 500);
+        hojaAlbum.classList.remove("entrando-desde-derecha");
+        hojaAlbum.classList.remove("entrando-desde-izquierda");
+    }, 780);
 });
 
 /* =========================
@@ -500,19 +505,49 @@ function navegarConAnimacion(url, direccion) {
 
     navegando = true;
 
-    if (direccion === "siguiente") {
-        paginaAlbum.classList.add("pasando-siguiente");
-        sessionStorage.setItem("album_transicion_entrada", "siguiente");
-    }
+    const hojaReal = document.getElementById("hojaAlbum") || paginaAlbum;
+    const rect = hojaReal.getBoundingClientRect();
 
-    if (direccion === "anterior") {
-        paginaAlbum.classList.add("pasando-anterior");
+    const clon = hojaReal.cloneNode(true);
+
+    clon.removeAttribute("id");
+    clon.classList.remove(
+        "pasando-siguiente",
+        "pasando-anterior",
+        "entrando-desde-derecha",
+        "entrando-desde-izquierda"
+    );
+
+    clon.classList.add("hoja-clon-transicion");
+
+    if (direccion === "siguiente") {
+        clon.classList.add("clon-siguiente");
+        sessionStorage.setItem("album_transicion_entrada", "siguiente");
+    } else {
+        clon.classList.add("clon-anterior");
         sessionStorage.setItem("album_transicion_entrada", "anterior");
     }
 
-    setTimeout(() => {
+    clon.style.left = rect.left + "px";
+    clon.style.top = rect.top + "px";
+    clon.style.width = rect.width + "px";
+    clon.style.height = rect.height + "px";
+
+    document.body.appendChild(clon);
+
+    hojaReal.classList.add("oculta-durante-transicion");
+
+    let yaNavego = false;
+
+    function ir() {
+        if (yaNavego) return;
+        yaNavego = true;
         window.location.href = url;
-    }, 920);
+    }
+
+    clon.addEventListener("animationend", ir);
+
+    setTimeout(ir, 1150);
 }
 
 /* Flechas del álbum */
@@ -568,11 +603,11 @@ paginaAlbum.addEventListener("mousedown", e => {
 
     iniciarMovimiento(e.clientX);
 });
+
 paginaAlbum.addEventListener("mouseup", e => terminarMovimiento(e.clientX));
-paginaAlbum.addEventListener("mouseleave", e => {
-    if (moviendo) {
-        moviendo = false;
-    }
+
+paginaAlbum.addEventListener("mouseleave", () => {
+    moviendo = false;
 });
 
 paginaAlbum.addEventListener("touchstart", e => {
@@ -582,6 +617,7 @@ paginaAlbum.addEventListener("touchstart", e => {
 
     iniciarMovimiento(e.touches[0].clientX);
 });
+
 paginaAlbum.addEventListener("touchend", e => terminarMovimiento(e.changedTouches[0].clientX));
 
 /* =========================
@@ -594,11 +630,9 @@ document.querySelectorAll("img").forEach(img => {
     img.setAttribute("draggable", "false");
 });
 
-document.querySelectorAll(".slot-figurita").forEach(slot => {
-    slot.addEventListener("dragstart", e => e.preventDefault());
-});
-
 slots.forEach(slot => {
+    slot.addEventListener("dragstart", e => e.preventDefault());
+
     slot.addEventListener("click", function () {
 
         if (huboArrastre) return;

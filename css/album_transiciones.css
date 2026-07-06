@@ -1,23 +1,41 @@
 /* =========================
-TRANSICIÓN TIPO HOJA DE LIBRO
-VERSIÓN MÁS VISIBLE
+TRANSICIÓN TIPO HOJA / SLIDE SUAVE
+v1.1.9 estable
 ========================= */
 
 .album-navegacion {
     position: relative;
-    perspective: 2200px;
+    perspective: 1600px;
+    perspective-origin: center center;
+    overflow: visible !important;
 }
 
-/* La página completa puede girar en 3D */
+/* El marco NO debe recortar la hoja durante la animación */
 .pagina-album {
+    overflow: visible !important;
+    background: transparent !important;
+}
+
+/* La hoja real */
+.hoja-album {
+    width: 1120px;
+    height: 657px;
+    position: relative;
+
     transform-style: preserve-3d;
     backface-visibility: hidden;
     will-change: transform, opacity, filter;
+
+    border-radius: 18px;
+    overflow: hidden;
+
+    box-shadow: 0 25px 50px rgba(0,0,0,0.45);
+    background: #e5e7eb;
 }
 
-/* Sombra general de pliegue */
-.pagina-album::before,
-.pagina-album::after {
+/* Sombra de pliegue */
+.hoja-album::before,
+.hoja-album::after {
     content: "";
     position: absolute;
     top: 0;
@@ -25,137 +43,154 @@ VERSIÓN MÁS VISIBLE
     width: 55%;
     pointer-events: none;
     opacity: 0;
-    z-index: 999;
+    z-index: 9999;
 }
 
-/* Sombra lado izquierdo */
-.pagina-album::before {
+.hoja-album::before {
     left: 0;
     background: linear-gradient(
         to right,
-        rgba(0, 0, 0, 0.55),
-        rgba(0, 0, 0, 0.22),
-        rgba(255, 255, 255, 0.04)
+        rgba(0,0,0,0.58),
+        rgba(0,0,0,0.20),
+        rgba(255,255,255,0.05)
     );
 }
 
-/* Sombra lado derecho */
-.pagina-album::after {
+.hoja-album::after {
     right: 0;
     background: linear-gradient(
         to left,
-        rgba(0, 0, 0, 0.55),
-        rgba(0, 0, 0, 0.22),
-        rgba(255, 255, 255, 0.04)
+        rgba(0,0,0,0.58),
+        rgba(0,0,0,0.20),
+        rgba(255,255,255,0.05)
     );
 }
 
-/* Pasar a página siguiente */
-.pagina-album.pasando-siguiente {
-    animation: pasarHojaSiguiente 0.95s cubic-bezier(.45, .05, .2, 1) forwards;
+/* =========================
+SALIDA
+========================= */
+
+.hoja-album.pasando-siguiente {
+    animation: hojaSaleSiguiente 1.15s ease-in-out forwards;
     transform-origin: right center;
 }
 
-/* Volver a página anterior */
-.pagina-album.pasando-anterior {
-    animation: pasarHojaAnterior 0.95s cubic-bezier(.45, .05, .2, 1) forwards;
+.hoja-album.pasando-anterior {
+    animation: hojaSaleAnterior 1.15s ease-in-out forwards;
     transform-origin: left center;
 }
 
-.pagina-album.pasando-siguiente::after {
-    animation: sombraDerecha 0.95s ease forwards;
+.hoja-album.pasando-siguiente::after {
+    animation: sombraDerecha 1.15s ease-in-out forwards;
 }
 
-.pagina-album.pasando-anterior::before {
-    animation: sombraIzquierda 0.95s ease forwards;
+.hoja-album.pasando-anterior::before {
+    animation: sombraIzquierda 1.15s ease-in-out forwards;
 }
 
-/* Entrada luego del cambio */
-.pagina-album.entrando-desde-derecha {
-    animation: entrarDesdeDerecha 0.65s ease-out both;
-    transform-origin: left center;
+/* =========================
+ENTRADA
+========================= */
+
+.hoja-album.entrando-desde-derecha {
+    animation: hojaEntraDesdeDerecha 0.65s ease-out both;
 }
 
-.pagina-album.entrando-desde-izquierda {
-    animation: entrarDesdeIzquierda 0.65s ease-out both;
-    transform-origin: right center;
+.hoja-album.entrando-desde-izquierda {
+    animation: hojaEntraDesdeIzquierda 0.65s ease-out both;
 }
 
-@keyframes pasarHojaSiguiente {
+/* =========================
+KEYFRAMES MÁS VISIBLES
+========================= */
+
+@keyframes hojaSaleSiguiente {
     0% {
         transform: translateX(0) rotateY(0deg) scale(1);
         opacity: 1;
         filter: brightness(1);
     }
 
-    30% {
-        transform: translateX(-45px) rotateY(-20deg) scale(0.985);
+    25% {
+        transform: translateX(-70px) rotateY(-8deg) scale(0.995);
         opacity: 1;
         filter: brightness(0.96);
     }
 
-    65% {
-        transform: translateX(-170px) rotateY(-52deg) scale(0.94);
-        opacity: 0.82;
-        filter: brightness(0.82);
+    55% {
+        transform: translateX(-230px) rotateY(-18deg) scale(0.98);
+        opacity: 1;
+        filter: brightness(0.88);
+    }
+
+    85% {
+        transform: translateX(-520px) rotateY(-28deg) scale(0.96);
+        opacity: 0.70;
+        filter: brightness(0.78);
     }
 
     100% {
-        transform: translateX(-310px) rotateY(-78deg) scale(0.88);
+        transform: translateX(-760px) rotateY(-34deg) scale(0.94);
         opacity: 0;
-        filter: brightness(0.62);
+        filter: brightness(0.70);
     }
 }
 
-@keyframes pasarHojaAnterior {
+@keyframes hojaSaleAnterior {
     0% {
         transform: translateX(0) rotateY(0deg) scale(1);
         opacity: 1;
         filter: brightness(1);
     }
 
-    30% {
-        transform: translateX(45px) rotateY(20deg) scale(0.985);
+    25% {
+        transform: translateX(70px) rotateY(8deg) scale(0.995);
         opacity: 1;
         filter: brightness(0.96);
     }
 
-    65% {
-        transform: translateX(170px) rotateY(52deg) scale(0.94);
-        opacity: 0.82;
-        filter: brightness(0.82);
+    55% {
+        transform: translateX(230px) rotateY(18deg) scale(0.98);
+        opacity: 1;
+        filter: brightness(0.88);
+    }
+
+    85% {
+        transform: translateX(520px) rotateY(28deg) scale(0.96);
+        opacity: 0.70;
+        filter: brightness(0.78);
     }
 
     100% {
-        transform: translateX(310px) rotateY(78deg) scale(0.88);
+        transform: translateX(760px) rotateY(34deg) scale(0.94);
         opacity: 0;
-        filter: brightness(0.62);
+        filter: brightness(0.70);
     }
 }
 
-@keyframes entrarDesdeDerecha {
+@keyframes hojaEntraDesdeDerecha {
     0% {
-        transform: translateX(160px) rotateY(45deg) scale(0.93);
+        transform: translateX(180px) scale(0.98);
         opacity: 0;
-        filter: brightness(0.72);
+        filter: brightness(0.80);
     }
 
     100% {
-        transform: translateX(0) rotateY(0deg) scale(1);
+        transform: translateX(0) scale(1);
         opacity: 1;
         filter: brightness(1);
     }
 }
 
-@keyframes entrarDesdeIzquierda {
+@keyframes hojaEntraDesdeIzquierda {
     0% {
-        transform: translateX(-160px) rotateY(-45deg) scale(0.93);
+        transform: translateX(-180px) scale(0.98);
         opacity: 0;
-        filter: brightness(0.72);
+        filter: brightness(0.80);
     }
 
     100% {
-        transform: translateX(0) rotateY(0deg) scale(1);
+        transform: translateX(0) scale(1);
         opacity: 1;
         filter: brightness(1);
     }
@@ -167,11 +202,11 @@ VERSIÓN MÁS VISIBLE
     }
 
     30% {
-        opacity: 0.35;
+        opacity: 0.25;
     }
 
     70% {
-        opacity: 0.75;
+        opacity: 0.70;
     }
 
     100% {
@@ -185,11 +220,11 @@ VERSIÓN MÁS VISIBLE
     }
 
     30% {
-        opacity: 0.35;
+        opacity: 0.25;
     }
 
     70% {
-        opacity: 0.75;
+        opacity: 0.70;
     }
 
     100% {
@@ -204,7 +239,7 @@ VERSIÓN MÁS VISIBLE
     -webkit-user-drag: none;
 }
 
-/* Evita sensación de arrastrar figuritas */
+/* Cursor limpio */
 .slot-figurita {
     cursor: pointer;
 }
@@ -214,10 +249,157 @@ VERSIÓN MÁS VISIBLE
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .pagina-album,
-    .pagina-album::before,
-    .pagina-album::after {
+    .hoja-album,
+    .hoja-album::before,
+    .hoja-album::after {
         animation: none !important;
         transition: none !important;
     }
+}
+
+/* =========================
+CLON VISUAL PARA TRANSICIÓN
+Método estable
+========================= */
+
+.hoja-clon-transicion {
+    position: fixed;
+    z-index: 99999;
+    pointer-events: none;
+
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform, opacity, filter;
+
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.55);
+}
+
+.hoja-clon-transicion::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 55%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.hoja-clon-transicion.clon-siguiente::after {
+    right: 0;
+    background: linear-gradient(
+        to left,
+        rgba(0,0,0,0.65),
+        rgba(0,0,0,0.22),
+        rgba(255,255,255,0.06)
+    );
+    animation: sombraClon 1.05s ease-in-out forwards;
+}
+
+.hoja-clon-transicion.clon-anterior::after {
+    left: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.65),
+        rgba(0,0,0,0.22),
+        rgba(255,255,255,0.06)
+    );
+    animation: sombraClon 1.05s ease-in-out forwards;
+}
+
+.hoja-clon-transicion.clon-siguiente {
+    transform-origin: right center;
+    animation: clonSaleSiguiente 1.05s ease-in-out forwards;
+}
+
+.hoja-clon-transicion.clon-anterior {
+    transform-origin: left center;
+    animation: clonSaleAnterior 1.05s ease-in-out forwards;
+}
+
+@keyframes clonSaleSiguiente {
+    0% {
+        transform: translateX(0) rotateY(0deg) scale(1);
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    25% {
+        transform: translateX(-90px) rotateY(-10deg) scale(0.995);
+        opacity: 1;
+        filter: brightness(0.96);
+    }
+
+    55% {
+        transform: translateX(-280px) rotateY(-22deg) scale(0.97);
+        opacity: 0.95;
+        filter: brightness(0.86);
+    }
+
+    85% {
+        transform: translateX(-600px) rotateY(-36deg) scale(0.94);
+        opacity: 0.72;
+        filter: brightness(0.72);
+    }
+
+    100% {
+        transform: translateX(-920px) rotateY(-46deg) scale(0.90);
+        opacity: 0;
+        filter: brightness(0.60);
+    }
+}
+
+@keyframes clonSaleAnterior {
+    0% {
+        transform: translateX(0) rotateY(0deg) scale(1);
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    25% {
+        transform: translateX(90px) rotateY(10deg) scale(0.995);
+        opacity: 1;
+        filter: brightness(0.96);
+    }
+
+    55% {
+        transform: translateX(280px) rotateY(22deg) scale(0.97);
+        opacity: 0.95;
+        filter: brightness(0.86);
+    }
+
+    85% {
+        transform: translateX(600px) rotateY(36deg) scale(0.94);
+        opacity: 0.72;
+        filter: brightness(0.72);
+    }
+
+    100% {
+        transform: translateX(920px) rotateY(46deg) scale(0.90);
+        opacity: 0;
+        filter: brightness(0.60);
+    }
+}
+
+@keyframes sombraClon {
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 0.35;
+    }
+
+    70% {
+        opacity: 0.85;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.hoja-album.oculta-durante-transicion {
+    opacity: 0;
 }
