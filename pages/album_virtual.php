@@ -478,29 +478,22 @@ ENTRADA DESPUÉS DE CAMBIAR PÁGINA
 ========================= */
 
 document.addEventListener("DOMContentLoaded", function () {
-    const entrada = sessionStorage.getItem("album_transicion_entrada");
-
-    if (entrada === "siguiente") {
-        hojaAlbum.classList.add("entrando-desde-derecha");
-    }
-
-    if (entrada === "anterior") {
-        hojaAlbum.classList.add("entrando-desde-izquierda");
-    }
-
     sessionStorage.removeItem("album_transicion_entrada");
 
-    setTimeout(() => {
-        hojaAlbum.classList.remove("entrando-desde-derecha");
-        hojaAlbum.classList.remove("entrando-desde-izquierda");
-    }, 780);
+    hojaAlbum.classList.remove(
+        "entrando-desde-derecha",
+        "entrando-desde-izquierda",
+        "pasando-siguiente",
+        "pasando-anterior",
+        "oculta-durante-transicion"
+    );
 });
 
 /* =========================
 NAVEGACIÓN CON EFECTO HOJA
 ========================= */
 
-function navegarConAnimacion(url, direccion) {
+async function navegarConAnimacion(url, direccion) {
     if (!url || navegando) return;
 
     navegando = true;
@@ -508,36 +501,68 @@ function navegarConAnimacion(url, direccion) {
     const hojaReal = document.getElementById("hojaAlbum") || paginaAlbum;
     const rect = hojaReal.getBoundingClientRect();
 
-    const anchoMitad = rect.width / 2;
-
     /*
-        Creamos una ventana recortada.
-        Esta ventana solo muestra media página.
+        1. Traemos la página destino sin navegar todavía.
+        Esto nos permite mostrarla debajo durante la animación.
     */
-    const ventanaMitad = document.createElement("div");
-    ventanaMitad.classList.add("mitad-hoja-transicion");
+    let hojaDestino = null;
 
-    if (direccion === "siguiente") {
-        ventanaMitad.classList.add("mitad-derecha-transicion");
-        ventanaMitad.style.left = (rect.left + anchoMitad) + "px";
-    } else {
-        ventanaMitad.classList.add("mitad-izquierda-transicion");
-        ventanaMitad.style.left = rect.left + "px";
+    try {
+        const respuesta = await fetch(url, {
+            cache: "no-store"
+        });
+
+        const html = await respuesta.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+
+        hojaDestino = doc.getElementById("hojaAlbum");
+    } catch (error) {
+        window.location.href = url;
+        return;
     }
 
-    ventanaMitad.style.top = rect.top + "px";
-    ventanaMitad.style.width = anchoMitad + "px";
-    ventanaMitad.style.height = rect.height + "px";
+    if (!hojaDestino) {
+        window.location.href = url;
+        return;
+    }
 
     /*
-        Clonamos la hoja completa, pero la metemos dentro
-        de una ventana que solo deja ver la mitad correspondiente.
+        2. Creamos el fondo con la página siguiente/anterior.
     */
-    const clonHoja = hojaReal.cloneNode(true);
+    const fondoDestino = hojaDestino.cloneNode(true);
 
-    clonHoja.removeAttribute("id");
-    clonHoja.classList.remove(
-        "hoja-album",
+    fondoDestino.removeAttribute("id");
+    fondoDestino.classList.remove(
+        "entrando-desde-derecha",
+        "entrando-desde-izquierda",
+        "pasando-siguiente",
+        "pasando-anterior",
+        "oculta-durante-transicion"
+    );
+
+    fondoDestino.classList.add("fondo-pagina-destino");
+
+    fondoDestino.style.left = rect.left + "px";
+    fondoDestino.style.top = rect.top + "px";
+    fondoDestino.style.width = rect.width + "px";
+    fondoDestino.style.height = rect.height + "px";
+
+    document.body.appendChild(fondoDestino);
+
+    requestAnimationFrame(() => {
+        fondoDestino.classList.add("mostrar-fondo-destino");
+    });
+    
+    /*
+        3. Clonamos la página actual.
+        Este clon será la media hoja que se dobla.
+    */
+    const clon = hojaReal.cloneNode(true);
+
+    clon.removeAttribute("id");
+
+    clon.classList.remove(
         "pasando-siguiente",
         "pasando-anterior",
         "entrando-desde-derecha",
@@ -545,55 +570,54 @@ function navegarConAnimacion(url, direccion) {
         "oculta-durante-transicion"
     );
 
-    clonHoja.classList.add("hoja-clon-mitad");
-
-    clonHoja.style.width = rect.width + "px";
-    clonHoja.style.height = rect.height + "px";
+    clon.classList.add("clon-media-hoja");
 
     if (direccion === "siguiente") {
-        /*
-            Para mostrar la mitad derecha, movemos el clon
-            hacia la izquierda media página.
-        */
-        clonHoja.style.left = "-" + anchoMitad + "px";
+        clon.classList.add("clon-media-derecha");
     } else {
-        /*
-            Para mostrar la mitad izquierda, queda en 0.
-        */
-        clonHoja.style.left = "0px";
+        clon.classList.add("clon-media-izquierda");
     }
 
-    ventanaMitad.appendChild(clonHoja);
-    document.body.appendChild(ventanaMitad);
+    clon.style.left = rect.left + "px";
+    clon.style.top = rect.top + "px";
+    clon.style.width = rect.width + "px";
+    clon.style.height = rect.height + "px";
+
+    document.body.appendChild(clon);
 
     /*
-        Agregamos una sombra sobre la mitad que queda fija
-        para simular profundidad.
+        4. Ocultamos la hoja real actual.
+        Si no hacemos esto, atrás se seguiría viendo la misma página.
     */
-    const sombraFija = document.createElement("div");
-    sombraFija.classList.add("sombra-fija-pagina");
+    hojaReal.classList.add("oculta-durante-transicion");
 
-    if (direccion === "siguiente") {
-        sombraFija.classList.add("sombra-fija-derecha");
-        sombraFija.style.left = (rect.left + anchoMitad) + "px";
-    } else {
-        sombraFija.classList.add("sombra-fija-izquierda");
-        sombraFija.style.left = rect.left + "px";
-    }
+    /*
+        5. Sombra del lomo central.
+    */
+    const sombraCentro = document.createElement("div");
+    sombraCentro.classList.add("sombra-lomo-transicion");
 
-    sombraFija.style.top = rect.top + "px";
-    sombraFija.style.width = anchoMitad + "px";
-    sombraFija.style.height = rect.height + "px";
+    sombraCentro.style.left = (rect.left + (rect.width / 2) - 2) + "px";
+    sombraCentro.style.top = rect.top + "px";
+    sombraCentro.style.height = rect.height + "px";
 
-    document.body.appendChild(sombraFija);
+    document.body.appendChild(sombraCentro);
 
-    if (direccion === "siguiente") {
-        ventanaMitad.classList.add("pasar-mitad-derecha");
-        sessionStorage.setItem("album_transicion_entrada", "siguiente");
-    } else {
-        ventanaMitad.classList.add("pasar-mitad-izquierda");
-        sessionStorage.setItem("album_transicion_entrada", "anterior");
-    }
+    /*
+        6. Forzamos que el navegador pinte el fondo y el clon
+        antes de iniciar la animación.
+    */
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            if (direccion === "siguiente") {
+                clon.classList.add("animar-media-derecha");
+            } else {
+                clon.classList.add("animar-media-izquierda");
+            }
+
+            sombraCentro.classList.add("animar-sombra-lomo");
+        });
+    });
 
     let yaNavego = false;
 
@@ -602,15 +626,16 @@ function navegarConAnimacion(url, direccion) {
 
         yaNavego = true;
 
-        ventanaMitad.remove();
-        sombraFija.remove();
+        clon.remove();
+        fondoDestino.remove();
+        sombraCentro.remove();
 
         window.location.href = url;
     }
 
-    ventanaMitad.addEventListener("animationend", ir);
+    clon.addEventListener("animationend", ir);
 
-    setTimeout(ir, 1200);
+    setTimeout(ir, 1250);
 }
 
 /* Flechas del álbum */
