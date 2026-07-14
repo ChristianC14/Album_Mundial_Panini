@@ -248,151 +248,153 @@ KEYFRAMES MÁS VISIBLES
     cursor: default;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .hoja-album,
-    .hoja-album::before,
-    .hoja-album::after {
-        animation: none !important;
-        transition: none !important;
-    }
-}
 
 /* =========================
-CLON VISUAL PARA TRANSICIÓN
-Método estable
+TRANSICIÓN REAL POR MEDIA HOJA
+v1.1.9 - Doble página
 ========================= */
 
-.hoja-clon-transicion {
+.mitad-hoja-transicion {
     position: fixed;
     z-index: 99999;
+    top: 0;
+    overflow: hidden;
     pointer-events: none;
 
     transform-style: preserve-3d;
     backface-visibility: hidden;
     will-change: transform, opacity, filter;
 
-    border-radius: 18px;
-    overflow: hidden;
     box-shadow: 0 30px 70px rgba(0,0,0,0.55);
 }
 
-.hoja-clon-transicion::after {
-    content: "";
+/* El clon completo vive dentro de una ventana de media página */
+.hoja-clon-mitad {
     position: absolute;
     top: 0;
-    bottom: 0;
-    width: 55%;
-    opacity: 0;
-    pointer-events: none;
+
+    transform: none !important;
+    animation: none !important;
+
+    border-radius: 18px;
+    overflow: hidden;
+
+    background: #e5e7eb;
 }
 
-.hoja-clon-transicion.clon-siguiente::after {
-    right: 0;
+/* Media derecha: gira desde el lomo central hacia la izquierda */
+.mitad-derecha-transicion {
+    transform-origin: left center;
+}
+
+.mitad-derecha-transicion::after {
+    content: "";
+    position: absolute;
+    inset: 0;
     background: linear-gradient(
         to left,
-        rgba(0,0,0,0.65),
-        rgba(0,0,0,0.22),
-        rgba(255,255,255,0.06)
+        rgba(0,0,0,0.62),
+        rgba(0,0,0,0.24),
+        rgba(255,255,255,0.05)
     );
-    animation: sombraClon 1.05s ease-in-out forwards;
+    opacity: 0;
+    pointer-events: none;
+    animation: sombraMediaHoja 1.15s ease-in-out forwards;
 }
 
-.hoja-clon-transicion.clon-anterior::after {
-    left: 0;
+/* Media izquierda: gira desde el lomo central hacia la derecha */
+.mitad-izquierda-transicion {
+    transform-origin: right center;
+}
+
+.mitad-izquierda-transicion::after {
+    content: "";
+    position: absolute;
+    inset: 0;
     background: linear-gradient(
         to right,
-        rgba(0,0,0,0.65),
-        rgba(0,0,0,0.22),
-        rgba(255,255,255,0.06)
+        rgba(0,0,0,0.62),
+        rgba(0,0,0,0.24),
+        rgba(255,255,255,0.05)
     );
-    animation: sombraClon 1.05s ease-in-out forwards;
+    opacity: 0;
+    pointer-events: none;
+    animation: sombraMediaHoja 1.15s ease-in-out forwards;
 }
 
-.hoja-clon-transicion.clon-siguiente {
-    transform-origin: right center;
-    animation: clonSaleSiguiente 1.05s ease-in-out forwards;
+/* Animación al avanzar: la mitad derecha se dobla hacia la izquierda */
+.pasar-mitad-derecha {
+    animation: pasarMitadDerecha 1.15s cubic-bezier(.45, .05, .2, 1) forwards;
 }
 
-.hoja-clon-transicion.clon-anterior {
-    transform-origin: left center;
-    animation: clonSaleAnterior 1.05s ease-in-out forwards;
+/* Animación al volver: la mitad izquierda se dobla hacia la derecha */
+.pasar-mitad-izquierda {
+    animation: pasarMitadIzquierda 1.15s cubic-bezier(.45, .05, .2, 1) forwards;
 }
 
-@keyframes clonSaleSiguiente {
+@keyframes pasarMitadDerecha {
     0% {
-        transform: translateX(0) rotateY(0deg) scale(1);
+        transform: translateX(0) rotateY(0deg);
         opacity: 1;
         filter: brightness(1);
-    }
-
-    25% {
-        transform: translateX(-90px) rotateY(-10deg) scale(0.995);
-        opacity: 1;
-        filter: brightness(0.96);
-    }
-
-    55% {
-        transform: translateX(-280px) rotateY(-22deg) scale(0.97);
-        opacity: 0.95;
-        filter: brightness(0.86);
-    }
-
-    85% {
-        transform: translateX(-600px) rotateY(-36deg) scale(0.94);
-        opacity: 0.72;
-        filter: brightness(0.72);
-    }
-
-    100% {
-        transform: translateX(-920px) rotateY(-46deg) scale(0.90);
-        opacity: 0;
-        filter: brightness(0.60);
-    }
-}
-
-@keyframes clonSaleAnterior {
-    0% {
-        transform: translateX(0) rotateY(0deg) scale(1);
-        opacity: 1;
-        filter: brightness(1);
-    }
-
-    25% {
-        transform: translateX(90px) rotateY(10deg) scale(0.995);
-        opacity: 1;
-        filter: brightness(0.96);
-    }
-
-    55% {
-        transform: translateX(280px) rotateY(22deg) scale(0.97);
-        opacity: 0.95;
-        filter: brightness(0.86);
-    }
-
-    85% {
-        transform: translateX(600px) rotateY(36deg) scale(0.94);
-        opacity: 0.72;
-        filter: brightness(0.72);
-    }
-
-    100% {
-        transform: translateX(920px) rotateY(46deg) scale(0.90);
-        opacity: 0;
-        filter: brightness(0.60);
-    }
-}
-
-@keyframes sombraClon {
-    0% {
-        opacity: 0;
     }
 
     30% {
-        opacity: 0.35;
+        transform: translateX(-45px) rotateY(-22deg);
+        opacity: 1;
+        filter: brightness(0.95);
+    }
+
+    65% {
+        transform: translateX(-180px) rotateY(-62deg);
+        opacity: 0.86;
+        filter: brightness(0.78);
+    }
+
+    100% {
+        transform: translateX(-360px) rotateY(-88deg);
+        opacity: 0;
+        filter: brightness(0.58);
+    }
+}
+
+@keyframes pasarMitadIzquierda {
+    0% {
+        transform: translateX(0) rotateY(0deg);
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    30% {
+        transform: translateX(45px) rotateY(22deg);
+        opacity: 1;
+        filter: brightness(0.95);
+    }
+
+    65% {
+        transform: translateX(180px) rotateY(62deg);
+        opacity: 0.86;
+        filter: brightness(0.78);
+    }
+
+    100% {
+        transform: translateX(360px) rotateY(88deg);
+        opacity: 0;
+        filter: brightness(0.58);
+    }
+}
+
+@keyframes sombraMediaHoja {
+    0% {
+        opacity: 0;
+    }
+
+    35% {
+        opacity: 0.28;
     }
 
     70% {
-        opacity: 0.85;
+        opacity: 0.78;
     }
 
     100% {
@@ -400,6 +402,41 @@ Método estable
     }
 }
 
-.hoja-album.oculta-durante-transicion {
+/* Sombra sobre la mitad fija, para que parezca profundidad */
+.sombra-fija-pagina {
+    position: fixed;
+    z-index: 99998;
+    pointer-events: none;
     opacity: 0;
+    animation: sombraFijaPagina 1.15s ease-in-out forwards;
+}
+
+.sombra-fija-derecha {
+    background: linear-gradient(
+        to left,
+        rgba(0,0,0,0.22),
+        rgba(0,0,0,0.04)
+    );
+}
+
+.sombra-fija-izquierda {
+    background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.22),
+        rgba(0,0,0,0.04)
+    );
+}
+
+@keyframes sombraFijaPagina {
+    0% {
+        opacity: 0;
+    }
+
+    45% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }

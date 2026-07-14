@@ -508,46 +508,109 @@ function navegarConAnimacion(url, direccion) {
     const hojaReal = document.getElementById("hojaAlbum") || paginaAlbum;
     const rect = hojaReal.getBoundingClientRect();
 
-    const clon = hojaReal.cloneNode(true);
+    const anchoMitad = rect.width / 2;
 
-    clon.removeAttribute("id");
-    clon.classList.remove(
+    /*
+        Creamos una ventana recortada.
+        Esta ventana solo muestra media página.
+    */
+    const ventanaMitad = document.createElement("div");
+    ventanaMitad.classList.add("mitad-hoja-transicion");
+
+    if (direccion === "siguiente") {
+        ventanaMitad.classList.add("mitad-derecha-transicion");
+        ventanaMitad.style.left = (rect.left + anchoMitad) + "px";
+    } else {
+        ventanaMitad.classList.add("mitad-izquierda-transicion");
+        ventanaMitad.style.left = rect.left + "px";
+    }
+
+    ventanaMitad.style.top = rect.top + "px";
+    ventanaMitad.style.width = anchoMitad + "px";
+    ventanaMitad.style.height = rect.height + "px";
+
+    /*
+        Clonamos la hoja completa, pero la metemos dentro
+        de una ventana que solo deja ver la mitad correspondiente.
+    */
+    const clonHoja = hojaReal.cloneNode(true);
+
+    clonHoja.removeAttribute("id");
+    clonHoja.classList.remove(
+        "hoja-album",
         "pasando-siguiente",
         "pasando-anterior",
         "entrando-desde-derecha",
-        "entrando-desde-izquierda"
+        "entrando-desde-izquierda",
+        "oculta-durante-transicion"
     );
 
-    clon.classList.add("hoja-clon-transicion");
+    clonHoja.classList.add("hoja-clon-mitad");
+
+    clonHoja.style.width = rect.width + "px";
+    clonHoja.style.height = rect.height + "px";
 
     if (direccion === "siguiente") {
-        clon.classList.add("clon-siguiente");
-        sessionStorage.setItem("album_transicion_entrada", "siguiente");
+        /*
+            Para mostrar la mitad derecha, movemos el clon
+            hacia la izquierda media página.
+        */
+        clonHoja.style.left = "-" + anchoMitad + "px";
     } else {
-        clon.classList.add("clon-anterior");
-        sessionStorage.setItem("album_transicion_entrada", "anterior");
+        /*
+            Para mostrar la mitad izquierda, queda en 0.
+        */
+        clonHoja.style.left = "0px";
     }
 
-    clon.style.left = rect.left + "px";
-    clon.style.top = rect.top + "px";
-    clon.style.width = rect.width + "px";
-    clon.style.height = rect.height + "px";
+    ventanaMitad.appendChild(clonHoja);
+    document.body.appendChild(ventanaMitad);
 
-    document.body.appendChild(clon);
+    /*
+        Agregamos una sombra sobre la mitad que queda fija
+        para simular profundidad.
+    */
+    const sombraFija = document.createElement("div");
+    sombraFija.classList.add("sombra-fija-pagina");
 
-    hojaReal.classList.add("oculta-durante-transicion");
+    if (direccion === "siguiente") {
+        sombraFija.classList.add("sombra-fija-derecha");
+        sombraFija.style.left = (rect.left + anchoMitad) + "px";
+    } else {
+        sombraFija.classList.add("sombra-fija-izquierda");
+        sombraFija.style.left = rect.left + "px";
+    }
+
+    sombraFija.style.top = rect.top + "px";
+    sombraFija.style.width = anchoMitad + "px";
+    sombraFija.style.height = rect.height + "px";
+
+    document.body.appendChild(sombraFija);
+
+    if (direccion === "siguiente") {
+        ventanaMitad.classList.add("pasar-mitad-derecha");
+        sessionStorage.setItem("album_transicion_entrada", "siguiente");
+    } else {
+        ventanaMitad.classList.add("pasar-mitad-izquierda");
+        sessionStorage.setItem("album_transicion_entrada", "anterior");
+    }
 
     let yaNavego = false;
 
     function ir() {
         if (yaNavego) return;
+
         yaNavego = true;
+
+        ventanaMitad.remove();
+        sombraFija.remove();
+
         window.location.href = url;
     }
 
-    clon.addEventListener("animationend", ir);
+    ventanaMitad.addEventListener("animationend", ir);
 
-    setTimeout(ir, 1150);
+    setTimeout(ir, 1200);
 }
 
 /* Flechas del álbum */
